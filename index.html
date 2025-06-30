@@ -93,22 +93,18 @@
   document.getElementById("orderForm").onsubmit = function (e) {
     e.preventDefault();
 
-    const formData = {
-      productName: document.getElementById("productName").value,
-      firstName: document.getElementById("firstName").value,
-      lastName: document.getElementById("lastName").value,
-      phone: `+38${document.getElementById("phone").value}`,
-      address: document.getElementById("address").value,
-      quantity: document.getElementById("quantity").value,
-      timestamp: new Date().toLocaleString(),
-    };
+    const formData = new FormData();
+    formData.append("productName", document.getElementById("productName").value);
+    formData.append("firstName", document.getElementById("firstName").value);
+    formData.append("lastName", document.getElementById("lastName").value);
+    formData.append("phone", `+38${document.getElementById("phone").value}`);
+    formData.append("address", document.getElementById("address").value);
+    formData.append("quantity", document.getElementById("quantity").value);
+    formData.append("timestamp", new Date().toLocaleString());
 
     fetch("https://script.google.com/macros/s/AKfycbyPO7MrBtcstj3xZlfaHJLBxtv6DzNeQg5mE1FhQNtp2_caW0sj-ZwTUHkxI_i8LYUt/exec", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(formData)
+      body: formData,
     })
     .then(response => response.text())
     .then(text => {
@@ -117,16 +113,15 @@
         document.getElementById("orderForm").reset();
       } else {
         console.warn("Ответ от сервера:", text);
-        alert("⚠️ Что-то пошло не так");
+        alert("⚠️ Заказ возможно не принят.");
       }
     })
     .catch((error) => {
-      console.error("Ошибка:", error);
-      alert("❌ Ошибка отправки формы");
+      console.error("Ошибка при отправке:", error);
+      alert("❌ Произошла ошибка при отправке формы. Попробуйте ещё раз.");
     });
   };
 </script>
-
 
 
 
