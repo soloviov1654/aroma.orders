@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Заказы на арома</title>
+</head>
+<body>
+          <div id="orderModal" class="modal">
+        <div class="modal-content">
+          <h2>Оформление заказа</h2>
+          <form id="orderForm">
+            <label for="productName">Артикул товара:</label>
+            <input type="text" id="productName" name="productName" />
+            <div class="form-group">
+              <label for="firstName">Имя:</label>
+              <input type="text" id="firstName" name="firstName" required />
+            </div>
+
+            <div class="form-group">
+              <label for="lastName">Фамилия:</label>
+              <input type="text" id="lastName" name="lastName" required />
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Номер телефона:</label>
+<input 
+  type="tel" 
+  id="phone" 
+  name="phone" 
+  maxlength="10" 
+  oninput="validatePhoneInput(this)" 
+  required
+/>
+<span id="phone-error" style=" display: none; ">
+  <h3 style="color: red ; font-size: 14px; font-weight: 400;">Формат: 0971234567</h3>
+</span>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Данные доставки:</label>
+              <textarea
+                id="address"
+                name="address"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+            <div class="form-group-value">
+        <label for="quantity">Количество:</label>
+        <select id="quantity" name="quantity" required>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+        
+      </div>
+            <button type="submit">Отправить заказ</button>
+            
+          </form>
+        </div>
+      </div>
+
+
+
+
+      <script>
+  function validatePhoneInput(input) {
+    // Оставляем только цифры
+    input.value = input.value.replace(/[^0-9]/g, '');
+
+    // Показываем/скрываем ошибку в зависимости от длины
+    const errorElement = document.getElementById('phone-error');
+    const isValidLength = input.value.length === 10 ;
+
+    errorElement.style.display = isValidLength ? 'none' : 'block';
+  }
+
+  // Дополнительная проверка перед отправкой формы (если нужно)
+  document.querySelector('form').addEventListener('submit', function(e) {
+    const phoneInput = document.getElementById('phone');
+    const phoneValue = phoneInput.value;
+    
+    if (phoneValue.length !== 10 ) {
+      e.preventDefault(); // Остановка отправки формы
+      alert('Номер телефону повинен містити 10!');
+    }
+  });
+</script>
+<script>
+  document.getElementById("orderForm").onsubmit = function (e) {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("productName", document.getElementById("productName").value);
+    formData.append("firstName", document.getElementById("firstName").value);
+    formData.append("lastName", document.getElementById("lastName").value);
+    formData.append("phone", `+38${document.getElementById("phone").value}`);
+    formData.append("address", document.getElementById("address").value);
+    formData.append("quantity", document.getElementById("quantity").value);
+    formData.append("timestamp", new Date().toLocaleString());
+
+    fetch("https://script.google.com/macros/s/AKfycbyPO7MrBtcstj3xZlfaHJLBxtv6DzNeQg5mE1FhQNtp2_caW0sj-ZwTUHkxI_i8LYUt/exec", {
+      method: "POST",
+      body: formData,
+    })
+    .then(response => response.text())
+    .then(text => {
+      if (text.trim() === "success") {
+        alert("✅ Заказ попал в таблицу");
+        document.getElementById("orderForm").reset();
+        window.location.href = "#steps";
+      } else {
+        console.warn("Ответ от сервера:", text);
+        alert("⚠️ Заказ возможно не принят.");
+      }
+    })
+    .catch((error) => {
+      console.error("Ошибка при отправке:", error);
+      alert("❌ Произошла ошибка при отправке формы. Попробуйте ещё раз.");
+    });
+  };
+</script>
+
+
+
+</body>
+</html>
