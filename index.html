@@ -109,11 +109,11 @@
     .then(response => response.text())
     .then(text => {
       if (text.trim() === "success") {
-        alert("✅ Заказ попал в таблицу");
+        alert("✅ Ваш заказ принят! Мы свяжемся с вами в ближайшее время.");
         document.getElementById("orderForm").reset();
       } else {
         console.warn("Ответ от сервера:", text);
-        alert("⚠️ Заказ возможно не принят.");
+        alert("⚠️ Неожиданный ответ от сервера. Заказ возможно не принят.");
       }
     })
     .catch((error) => {
@@ -122,6 +122,7 @@
     });
   };
 </script>
+
 
 
 
