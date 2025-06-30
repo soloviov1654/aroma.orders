@@ -22,7 +22,7 @@ body::after {
   top: -8%;
   left: 0;
   width: 100%;
-  background: url("./src/hero-back.svg") 7vw center / cover no-repeat;
+  /* background: url("./src/hero-back.svg") 7vw center / cover no-repeat; */
   z-index: -1;
   height: -webkit-fill-available;
   height: 1800px;

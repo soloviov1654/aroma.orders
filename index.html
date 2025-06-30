@@ -104,24 +104,20 @@
 
     fetch("https://script.google.com/macros/s/AKfycbyPO7MrBtcstj3xZlfaHJLBxtv6DzNeQg5mE1FhQNtp2_caW0sj-ZwTUHkxI_i8LYUt/exec", {
       method: "POST",
+      mode: "no-cors",
       body: formData,
     })
-    .then(response => response.text())
-    .then(text => {
-      if (text.trim() === "success") {
-        alert("✅ Ваш заказ принят! Мы свяжемся с вами в ближайшее время.");
-        document.getElementById("orderForm").reset();
-      } else {
-        console.warn("Ответ от сервера:", text);
-        alert("⚠️ Неожиданный ответ от сервера. Заказ возможно не принят.");
-      }
+    .then(() => {
+      alert("✅ Заказ ушел в таблицу");
+      document.getElementById("orderForm").reset();
     })
-    .catch((error) => {
+    .catch(error => {
       console.error("Ошибка при отправке:", error);
       alert("❌ Произошла ошибка при отправке формы. Попробуйте ещё раз.");
     });
   };
 </script>
+
 
 
 
